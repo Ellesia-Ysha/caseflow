@@ -1,5 +1,7 @@
 # CaseFlow
 
+[![Tests](https://github.com/Ellesia-Ysha/caseflow/actions/workflows/test.yml/badge.svg)](https://github.com/Ellesia-Ysha/caseflow/actions/workflows/test.yml)
+
 A case-management dashboard built by **Ellesia Catherine Reyes** to demonstrate frontend engineering beyond CRUD screens: virtualized rendering at scale, URL-synced filtering, and optimistic updates with real rollback.
 
 **[View the live demo →](https://ellesia-ysha.github.io/caseflow/)**
@@ -14,6 +16,7 @@ There's no real backend — [MSW](https://mswjs.io/) intercepts network requests
 - **Optimistic updates with real rollback.** Changing a case's status or assignee updates the UI immediately via [TanStack Query](https://tanstack.com/query)'s `onMutate`, and the mock API intentionally fails ~18% of the time so the rollback path (revert the cache, toast an error) is something you can actually see happen, not just code that's never exercised.
 - **Accessible by construction.** Interactive pieces (Select, Dialog/Drawer, Toast) are built on Radix UI primitives for correct focus management and ARIA behavior, not just visual styling.
 - **Built on [`ecr-components`](https://www.npmjs.com/package/ecr-components).** Badge and Input are pulled from my own published component library rather than duplicated locally — same design tokens, so it's a drop-in. Select, Drawer, and Skeleton stay local since the library doesn't have equivalents for those yet.
+- **The optimistic-update/rollback logic is actually tested, not just eyeballed.** Vitest unit tests drive `useUpdateCaseMutation` against a mocked API (via `msw/node`) with a manually-controlled response gate, so the optimistic write, the rollback-on-failure, and the keep-on-success paths are all asserted deterministically — no reliance on the real ~18% failure rate landing the right way during a test run. Playwright E2E covers the same flow end-to-end in a real browser against the production build (search → filter → sort → edit), including an assignee-edit test that accepts whichever outcome the mock API actually returns and asserts the UI settles cleanly either way.
 
 ## Performance notes
 
@@ -39,15 +42,17 @@ React · TypeScript · Vite · Tailwind CSS · TanStack Query/Table/Virtual · R
 
 ```bash
 npm install
-npm run dev      # generates the mock dataset, then starts the dev server
-npm run check    # typecheck
-npm run build    # generates fresh data, typechecks, and builds to dist/
+npm run dev        # generates the mock dataset, then starts the dev server
+npm run check      # typecheck
+npm run build      # generates fresh data, typechecks, and builds to dist/
+npm run test       # unit tests (Vitest + React Testing Library)
+npm run test:e2e   # Playwright E2E — builds + serves the production output first
 ```
 
-The mock dataset is regenerated automatically before `dev` and `build` (deterministically — same seed, same data every time) rather than committed to the repo.
+The mock dataset is regenerated automatically before `dev` and `build` (deterministically — same seed, same data every time) rather than committed to the repo. Both test suites run in CI (`.github/workflows/test.yml`) on every push and pull request to `main`.
 
 ## Roadmap
 
-- [ ] Unit tests (Vitest + React Testing Library) for the optimistic-update logic
-- [ ] Playwright E2E covering the filter → sort → edit → rollback flow
+- [x] Unit tests (Vitest + React Testing Library) for the optimistic-update logic
+- [x] Playwright E2E covering the filter → sort → edit → rollback flow
 - [ ] Keyboard-navigable table row selection (arrow keys, not just Tab)

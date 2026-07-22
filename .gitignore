@@ -5,3 +5,9 @@ dist
 
 # Generated deterministically by scripts/generate-mock-data.mjs (see predev/prebuild).
 src/data/cases.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
