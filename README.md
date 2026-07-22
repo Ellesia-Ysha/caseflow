@@ -13,6 +13,7 @@ There's no real backend — [MSW](https://mswjs.io/) intercepts network requests
 - **Debounced search.** Typing doesn't trigger a request per keystroke; input is debounced before it updates the URL state and fires a query.
 - **Optimistic updates with real rollback.** Changing a case's status or assignee updates the UI immediately via [TanStack Query](https://tanstack.com/query)'s `onMutate`, and the mock API intentionally fails ~18% of the time so the rollback path (revert the cache, toast an error) is something you can actually see happen, not just code that's never exercised.
 - **Accessible by construction.** Interactive pieces (Select, Dialog/Drawer, Toast) are built on Radix UI primitives for correct focus management and ARIA behavior, not just visual styling.
+- **Built on [`ecr-components`](https://www.npmjs.com/package/ecr-components).** Badge and Input are pulled from my own published component library rather than duplicated locally — same design tokens, so it's a drop-in. Select, Drawer, and Skeleton stay local since the library doesn't have equivalents for those yet.
 
 ## Performance notes
 
@@ -32,7 +33,7 @@ The gap between those two isn't a fluke — it's what happens to any small app u
 
 ## Stack
 
-React · TypeScript · Vite · Tailwind CSS · TanStack Query/Table/Virtual · Radix UI · MSW
+React · TypeScript · Vite · Tailwind CSS · TanStack Query/Table/Virtual · Radix UI · MSW · [ecr-components](https://www.npmjs.com/package/ecr-components)
 
 ## Running locally
 

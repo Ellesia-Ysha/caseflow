@@ -2,7 +2,16 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    // ecr-components ships compiled JS, not source — scan it directly so
+    // Tailwind generates CSS for the utility classes baked into its bundle.
+    // Its design tokens (colors/radius) match this app's exactly, so the
+    // generated classes render identically without needing to import its
+    // separately-built stylesheet too.
+    "./node_modules/ecr-components/dist/**/*.{js,mjs}",
+  ],
   theme: {
     extend: {
       borderRadius: {

@@ -1,18 +1,18 @@
-import { Badge } from "@/components/ui/Badge";
+import { Badge } from "ecr-components";
 import { STATUS_LABELS, PRIORITY_LABELS, type CaseStatus, type CasePriority } from "@/types";
 
-const STATUS_VARIANT: Record<CaseStatus, "blue" | "amber" | "green" | "slate"> = {
-  open: "blue",
-  in_progress: "amber",
-  resolved: "green",
-  closed: "slate",
+const STATUS_VARIANT: Record<CaseStatus, "primary" | "warning" | "success" | "default"> = {
+  open: "primary",
+  in_progress: "warning",
+  resolved: "success",
+  closed: "default",
 };
 
-const PRIORITY_VARIANT: Record<CasePriority, "slate" | "blue" | "amber" | "red"> = {
-  low: "slate",
-  medium: "blue",
-  high: "amber",
-  urgent: "red",
+const PRIORITY_VARIANT: Record<CasePriority, "default" | "primary" | "warning" | "destructive"> = {
+  low: "default",
+  medium: "primary",
+  high: "warning",
+  urgent: "destructive",
 };
 
 export function StatusBadge({ status }: { status: CaseStatus }) {

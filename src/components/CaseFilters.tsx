@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
-import { Input } from "@/components/ui/Input";
+import { Input } from "ecr-components";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ASSIGNEES } from "@/data/assignees";
