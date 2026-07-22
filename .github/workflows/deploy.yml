@@ -23,7 +23,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      # Not `npm ci`: this lockfile is generated on Windows during local dev,
+      # and npm has a known bug (npm/cli#4828) where optional platform
+      # binaries (e.g. @rollup/rollup-linux-x64-gnu) recorded in a
+      # cross-platform-written lockfile don't reliably get installed by
+      # `npm ci` on a different OS. `npm install` re-resolves optional deps
+      # against the actual runner platform instead of trusting the snapshot.
+      - run: npm install
       - run: npm run check
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
